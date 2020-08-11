@@ -7,6 +7,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class ImageViewer; }
 class QLabel;
 class QScrollArea;
+class QScrollBar;
 QT_END_NAMESPACE
 
 class ImageViewer : public QMainWindow
@@ -21,8 +22,6 @@ private:
     Ui::ImageViewer *ui;
     QLabel *imageLabel;
     QScrollArea *scrollArea;
-
-    void InitMenuBar();
     QAction *openAct;
     QAction *printAct;
     QAction *exitAct;
@@ -32,5 +31,20 @@ private:
     QAction *fitToWindowAct;
     QAction *aboutAct;
     QAction *aboutQtAct;
+    float scaleFactor;
+
+    void InitMenuBar();
+    void InitConnection();
+    void updateAction();
+    void scaleImage(float scaleFactor);
+    void adjustScrollBar(QScrollBar *scrollBar, float factor);
+private slots:
+    void open();
+    void print();
+
+    void zoomIn();
+    void zoomOut();
+    void normalSize();
+    void fitToWindow();
 };
 #endif // IMAGEVIEWER_H
