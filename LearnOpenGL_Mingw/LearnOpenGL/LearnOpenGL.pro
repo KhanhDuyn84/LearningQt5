@@ -15,6 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        application.cpp \
+        glslshader.cpp \
         main.cpp \
         src/glad.c
 
@@ -26,8 +28,18 @@ INCLUDEPATH += $$PWD/include
 LIBS += $$PWD/../GLFW/lib/glfw3.dll
 LIBS += $$PWD/../SOIL2/lib/soil2.dll
 
+PROJECT_PATH = $$PWD
+DEFINES += PROJECT_PATH
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+HEADERS += \
+    Global.h \
+    application.h \
+    glslshader.h \
+    noncopyable.h
+
 
