@@ -15,6 +15,7 @@ class Application
 private:
     void InitWindow();
     void InitOpenGL();
+    void InitIcon();
     void InitCallBackFunc();
     void processInput();
     void InitMember();
