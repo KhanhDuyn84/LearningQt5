@@ -5,6 +5,10 @@
 #include "noncopyable.h"
 #include <map>
 #include <iostream>
+
+namespace GSEngine
+{
+
 class GLSLShader : public Noncopyable
 {
 private:
@@ -22,4 +26,5 @@ public:
     void Use();
 };
 
+}
 #endif // GLSLSHADER_H

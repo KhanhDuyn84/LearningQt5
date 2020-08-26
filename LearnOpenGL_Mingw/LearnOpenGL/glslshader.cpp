@@ -1,6 +1,10 @@
 #include "glslshader.h"
 #include <fstream>
 #include <sstream>
+
+namespace GSEngine
+{
+
 GLSLShader::GLSLShader(const char* vertexPath, const char* fragmentPath)
 {
     std::string vertexCode;
@@ -113,4 +117,6 @@ void GLSLShader::setFloat(const std::string &name, float value) const
 GLSLShader::~GLSLShader()
 {
     glDeleteProgram(ID);
+}
+
 }

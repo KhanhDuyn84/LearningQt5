@@ -16,9 +16,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         application.cpp \
+        fps.cpp \
         glslshader.cpp \
+        loader.cpp \
         main.cpp \
-        src/glad.c
+        model.cpp \
+        src/glad.c \
+        texture.cpp
 
 INCLUDEPATH += $$PWD/../GLFW/include
 INCLUDEPATH += $$PWD/../GLM
@@ -39,7 +43,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     Global.h \
     application.h \
+    fps.h \
     glslshader.h \
-    noncopyable.h
+    loader.h \
+    model.h \
+    noncopyable.h \
+    texture.h
 
 

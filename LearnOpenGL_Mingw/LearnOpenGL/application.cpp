@@ -2,13 +2,19 @@
 #include "GLFW/glfw3.h"
 #include "glslshader.h"
 #include "Global.h"
+#include "fps.h"
+#include "model.h"
+#include "loader.h"
 #include <iostream>
+
+using namespace GSEngine;
 
 Application::Application()
 {
     InitWindow();
     InitOpenGL();
     InitCallBackFunc();
+    InitMember();
     glViewport(0, 0, 800, 600);
 }
 
@@ -33,7 +39,6 @@ void Application::InitOpenGL()
     if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout<< "FAILED TO INITIALIZE GLAD" << std::endl;
-        //return EXIT_FAILURE;
     }
 }
 
@@ -42,9 +47,8 @@ void Application::InitCallBackFunc()
     glfwSetFramebufferSizeCallback(m_Window, &Application::framebuffer_size_callback);
 }
 
-void Application::Run()
+void Application::InitMember()
 {
-    GLSLShader shader(TRIANGLE_VS, TRIANGLE_FS);
     float vertices [] = {
         -0.5f, -0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
@@ -55,40 +59,43 @@ void Application::Run()
         0, 1, 2,
         0, 2, 3
     };
-    GLuint VBO, VAO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
+    triangleModel = Loader::LoadModelWithVertices(vertices, sizeof(vertices)/sizeof(vertices[0]));
+    //triangleModel = Loader::LoadModelWithIndices(vertices, sizeof(vertices)/sizeof(vertices[0]), indices, sizeof(indices)/sizeof(indices[0]));
 
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    triangleShader = new GLSLShader(TRIANGLE_VS, TRIANGLE_FS);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
+    fps = new FPS();
+}
+void Application::Run()
+{
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     while (!glfwWindowShouldClose(m_Window))
     {
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        Render();
 
-        shader.Use();
-        glBindVertexArray(VAO);
-        //glDrawArrays(GL_TRIANGLES, 0 , 3);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        glfwSwapBuffers(m_Window);
-        glfwPollEvents();
+        fps->DoFrame();
 
         processInput();
+
+        glfwSwapBuffers(m_Window);
+        glfwPollEvents();
     }
+}
+
+void Application::Render()
+{
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    triangleShader->Use();
+    glBindVertexArray(triangleModel->getVAOID());
+    glDrawArrays(GL_TRIANGLES, 0 , 3);
+    //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 void Application::framebuffer_size_callback(GLFWwindow *window, int Width, int Height)
 {
+    (void)window;
     glViewport(0, 0, Width, Height);
 }
 
@@ -102,6 +109,7 @@ void Application::processInput()
 
 Application::~Application()
 {
+    Loader::CleanUp();
     glfwDestroyWindow(m_Window);
     glfwTerminate();
 }
