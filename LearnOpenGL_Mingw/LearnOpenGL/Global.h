@@ -1,8 +1,8 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#define SCR_WIDTH 800
-#define SCR_HEIGHT 600
+#define SCR_WIDTH 400
+#define SCR_HEIGHT 800
 
 #define CURRENT_PATH    "C:/Users/duy3.nguyen/Desktop/LearningQt5/LearnOpenGL_Mingw"
 
@@ -14,5 +14,7 @@
 #define TRIANGLE_FS     SHADERS_PATH    "/triangleShaderFS.fs"
 
 #define GLFW_ICON       IMAGES_PATH     "/asphalt9.png"
+
+#define BROKEN_IMAGE    IMAGES_PATH     "/A (8).png"
 
 #endif // GLOBAL_H

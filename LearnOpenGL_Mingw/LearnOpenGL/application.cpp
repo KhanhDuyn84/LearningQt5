@@ -6,7 +6,9 @@
 #include "model.h"
 #include "loader.h"
 #include "SOIL2/SOIL2.h"
+#include "texture.h"
 #include <iostream>
+#include <windows.h>
 
 using namespace GSEngine;
 
@@ -30,7 +32,7 @@ void Application::InitWindow()
     glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
     glfwWindowHint(GLFW_DEPTH_BITS, 16);
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
-
+    glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);
     m_Window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", nullptr, nullptr);
     if(m_Window == nullptr)
     {
@@ -38,10 +40,11 @@ void Application::InitWindow()
         glfwTerminate();
     }
     glfwMakeContextCurrent(m_Window);
+    glfwSwapInterval(1);
     GLFWmonitor *primaryMonitor = glfwGetPrimaryMonitor();
     const GLFWvidmode *modes = glfwGetVideoMode(primaryMonitor);
-    glfwSetWindowPos(m_Window, modes->width/2 - SCR_WIDTH / 2, modes->height/2 - SCR_HEIGHT/2);
-    glfwSetWindowOpacity(m_Window, 0.5f);
+    glfwSetWindowPos(m_Window, modes->width - SCR_WIDTH, modes->height/2 - SCR_HEIGHT/2);
+    glfwSetWindowOpacity(m_Window, 0.7f);
 }
 
 void Application::InitOpenGL()
@@ -54,15 +57,15 @@ void Application::InitOpenGL()
 
 void Application::InitIcon()
 {
-    GLFWimage icon[1];
+    GLFWimage icon;
     int width, height, channels;
-    icon[0].pixels = SOIL_load_image(GLFW_ICON, &width, &height, &channels, SOIL_LOAD_AUTO);
-    if(icon[0].pixels != nullptr)
+    icon.pixels = SOIL_load_image(GLFW_ICON, &width, &height, &channels, SOIL_LOAD_AUTO);
+    if(icon.pixels != nullptr)
     {
-        icon[0].width = width;
-        icon[0].height = height;
-        glfwSetWindowIcon(m_Window, 1, icon);
-        SOIL_free_image_data(icon[0].pixels);
+        icon.width = width;
+        icon.height = height;
+        glfwSetWindowIcon(m_Window, 1, &icon);
+        SOIL_free_image_data(icon.pixels);
     }
     else
     {
@@ -78,19 +81,24 @@ void Application::InitCallBackFunc()
 void Application::InitMember()
 {
     float vertices [] = {
-        -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,
-        0.0f, 0.5f, 0.0f,       0.0f, 0.0f, 1.0f
-        //-0.5f, 0.5f, 0.0f
+        -1.0f, -1.0f, 0.0f,     0.0f, 0.0f,
+        1.0f, -1.0f, 0.0f,      1.0f, 0.0f,
+        1.0f, 1.0f, 0.0f,       1.0f, 1.0f,
+        -1.0f, 1.0f, 0.0f,      0.0f, 1.0f
     };
-//    GLuint indices[] = {
-//        0, 1, 2,
-//        0, 2, 3
-//    };
-    triangleModel = Loader::LoadModelWithVertices(vertices, sizeof(vertices)/sizeof(vertices[0]));
-    //triangleModel = Loader::LoadModelWithIndices(vertices, sizeof(vertices)/sizeof(vertices[0]), indices, sizeof(indices)/sizeof(indices[0]));
+    GLuint indices[] = {
+        0, 1, 2,
+        0, 2, 3
+    };
+    //triangleModel = Loader::LoadModelWithVertices(vertices, sizeof(vertices)/sizeof(vertices[0]));
+    triangleModel = Loader::LoadModelWithIndices(vertices, sizeof(vertices)/sizeof(vertices[0]), indices, sizeof(indices)/sizeof(indices[0]));
 
     triangleShader = new GLSLShader(TRIANGLE_VS, TRIANGLE_FS);
+
+    triangleTexture = Loader::LoadTexture(BROKEN_IMAGE, 0);
+
+    triangleShader->addUniform("ourTexture");
+    triangleShader->setInt("ourTexture", 0);
 
     fps = new FPS();
 }
@@ -98,7 +106,8 @@ void Application::InitMember()
 void Application::Run()
 {
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    //glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_BLEND_SRC);
     while (!glfwWindowShouldClose(m_Window))
     {
         Render();
@@ -109,6 +118,7 @@ void Application::Run()
 
         processInput();
 
+
         glfwSwapBuffers(m_Window);
         glfwPollEvents();
     }
@@ -117,12 +127,14 @@ void Application::Run()
 void Application::Render()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     triangleShader->Use();
     glBindVertexArray(triangleModel->getVAOID());
-    glDrawArrays(GL_TRIANGLES, 0 , 3);
-    //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glActiveTexture(GL_TEXTURE0 + triangleTexture->getTextureUnit());
+    glBindTexture(GL_TEXTURE_2D, triangleTexture->getTextureID());
+    //glDrawArrays(GL_TRIANGLES, 0 , 3);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 void Application::framebuffer_size_callback(GLFWwindow *window, int Width, int Height)
@@ -135,6 +147,20 @@ void Application::processInput()
 {
     if(glfwGetKey(m_Window, GLFW_KEY_SPACE) == GLFW_PRESS)
     {
+//        static bool isShow = false;
+//        isShow = !isShow;
+//        if(isShow)
+//        {
+//            glfwSetWindowAttrib(m_Window, GLFW_DECORATED, GLFW_TRUE);
+//            glfwSetWindowAttrib(m_Window, GLFW_MOUSE_PASSTHROUGH, GLFW_FALSE);
+//            glfwSetWindowOpacity(m_Window, 1.0f);
+//        }
+//        else
+//        {
+//            glfwSetWindowAttrib(m_Window, GLFW_DECORATED, GLFW_FALSE);
+//            glfwSetWindowAttrib(m_Window, GLFW_MOUSE_PASSTHROUGH, GLFW_TRUE);
+//            glfwSetWindowOpacity(m_Window, 0.7f);
+//        }
         glfwSetWindowShouldClose(m_Window, true);
     }
 }
