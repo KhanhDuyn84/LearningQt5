@@ -60,6 +60,7 @@ void Application::InitIcon()
     GLFWimage icon;
     int width, height, channels;
     icon.pixels = SOIL_load_image(GLFW_ICON, &width, &height, &channels, SOIL_LOAD_AUTO);
+    std::cout<<GLFW_ICON<<std::endl;
     if(icon.pixels != nullptr)
     {
         icon.width = width;

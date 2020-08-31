@@ -4,7 +4,7 @@
 #define SCR_WIDTH 400
 #define SCR_HEIGHT 800
 
-#define CURRENT_PATH    "C:/Users/duy3.nguyen/Desktop/LearningQt5/LearnOpenGL_Mingw"
+#define CURRENT_PATH    SCR_DIR "/.."
 
 #define RESOURCE_PATH   CURRENT_PATH    "/Resources"
 #define SHADERS_PATH    RESOURCE_PATH   "/Shaders"
