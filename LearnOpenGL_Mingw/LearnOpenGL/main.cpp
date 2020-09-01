@@ -1,10 +1,12 @@
 #include "application.h"
 #include <iostream>
 #include <string.h>
+#include <QDir>
 using namespace std;
 int main(int argc, char *argv[])
 {
-    cout<<SCR_DIR<<std::endl;
+    //QDir::currentPath();
+    cout<< QDir::currentPath().toStdString()<<std::endl;
     Application app;
     app.Run();
 }

@@ -8,7 +8,7 @@
 #include "SOIL2/SOIL2.h"
 #include "texture.h"
 #include <iostream>
-#include <windows.h>
+#include "filehelper.h"
 
 using namespace GSEngine;
 
@@ -33,7 +33,7 @@ void Application::InitWindow()
     glfwWindowHint(GLFW_DEPTH_BITS, 16);
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
     glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);
-    m_Window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", nullptr, nullptr);
+    m_Window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, TITLE_WINDOW, nullptr, nullptr);
     if(m_Window == nullptr)
     {
         std::cout<< "FAILED TO CREATE GLFW CONTEXT"<< std::endl;
@@ -59,8 +59,9 @@ void Application::InitIcon()
 {
     GLFWimage icon;
     int width, height, channels;
-    icon.pixels = SOIL_load_image(GLFW_ICON, &width, &height, &channels, SOIL_LOAD_AUTO);
-    std::cout<<GLFW_ICON<<std::endl;
+    std::string imagePath = FileHelper::getInstance()->getPath("IMAGE_ICON");
+    icon.pixels = SOIL_load_image(imagePath.c_str(), &width, &height, &channels, SOIL_LOAD_AUTO);
+    std::cout<<imagePath<<std::endl;
     if(icon.pixels != nullptr)
     {
         icon.width = width;
@@ -94,9 +95,13 @@ void Application::InitMember()
     //triangleModel = Loader::LoadModelWithVertices(vertices, sizeof(vertices)/sizeof(vertices[0]));
     triangleModel = Loader::LoadModelWithIndices(vertices, sizeof(vertices)/sizeof(vertices[0]), indices, sizeof(indices)/sizeof(indices[0]));
 
-    triangleShader = new GLSLShader(TRIANGLE_VS, TRIANGLE_FS);
+    FileHelper *fileHelper = FileHelper::getInstance();
+    std::string triangleVSPath = fileHelper->getPath("TRIANGLE_VS");
+    std::string triangleFSPath = fileHelper->getPath("TRIANGLE_FS");
+    std::string brokenImagePath = fileHelper->getPath("BROKEN_IMAGE");
 
-    triangleTexture = Loader::LoadTexture(BROKEN_IMAGE, 0);
+    triangleShader = new GLSLShader(triangleVSPath.c_str(), triangleFSPath.c_str());
+    triangleTexture = Loader::LoadTexture(brokenImagePath.c_str(), 0);
 
     triangleShader->addUniform("ourTexture");
     triangleShader->setInt("ourTexture", 0);

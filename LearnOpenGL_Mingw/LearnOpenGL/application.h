@@ -10,6 +10,8 @@ namespace GSEngine {
 }
 
 class GLFWwindow;
+class FileHelper;
+
 class Application
 {
 private:

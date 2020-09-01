@@ -9,7 +9,6 @@ CONFIG -= app_bundle
 DESTDIR = $$PWD/../bin
 
 DEFINES += QT_DEPRECATED_WARNINGS
-DEFINES += SCR_DIR=\\\"$${PWD}\\\"
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
@@ -17,6 +16,7 @@ DEFINES += SCR_DIR=\\\"$${PWD}\\\"
 
 SOURCES += \
         application.cpp \
+        filehelper.cpp \
         fps.cpp \
         glslshader.cpp \
         loader.cpp \
@@ -44,6 +44,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     Global.h \
     application.h \
+    filehelper.h \
     fps.h \
     glslshader.h \
     loader.h \
