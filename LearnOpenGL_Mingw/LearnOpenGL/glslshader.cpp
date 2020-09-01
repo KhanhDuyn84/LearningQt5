@@ -1,4 +1,5 @@
 #include "glslshader.h"
+#include "glm/gtc/type_ptr.hpp"
 #include <fstream>
 #include <sstream>
 
@@ -112,6 +113,13 @@ void GLSLShader::setFloat(const std::string &name, float value) const
     if(m_Uniforms.find(name) == m_Uniforms.end())
         return;
     glUniform1f(m_Uniforms.at(name), value);
+}
+
+void GLSLShader::setMat4(const std::string &name, glm::mat4 value) const
+{
+    if(m_Uniforms.find(name) == m_Uniforms.end())
+        return;
+    glUniformMatrix4fv(m_Uniforms.at(name), 1, GL_FALSE, glm::value_ptr(value));
 }
 
 GLSLShader::~GLSLShader()

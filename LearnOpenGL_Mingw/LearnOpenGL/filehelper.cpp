@@ -12,7 +12,7 @@ FileHelper::FileHelper()
     m_MapPath["TRIANGLE_FS"] = m_ShadersPath + "/triangleShaderFS.fs";
 
     m_MapPath["IMAGE_ICON"] = m_ImagesPath + "/asphalt9.png";
-    m_MapPath["BROKEN_IMAGE"] = m_ImagesPath + "/A (8).png";
+    m_MapPath["BROKEN_IMAGE"] = m_ImagesPath + "/advenger.png";
 }
 
 FileHelper::~FileHelper()

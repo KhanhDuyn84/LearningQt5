@@ -9,6 +9,8 @@
 #include "texture.h"
 #include <iostream>
 #include "filehelper.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 using namespace GSEngine;
 
@@ -104,6 +106,7 @@ void Application::InitMember()
     triangleTexture = Loader::LoadTexture(brokenImagePath.c_str(), 0);
 
     triangleShader->addUniform("ourTexture");
+    triangleShader->addUniform("MVP");
     triangleShader->setInt("ourTexture", 0);
 
     fps = new FPS();
@@ -135,7 +138,11 @@ void Application::Render()
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glm::mat4 trans = glm::mat4(1.0f);
+    trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+
     triangleShader->Use();
+    triangleShader->setMat4("MVP", trans);
     glBindVertexArray(triangleModel->getVAOID());
     glActiveTexture(GL_TEXTURE0 + triangleTexture->getTextureUnit());
     glBindTexture(GL_TEXTURE_2D, triangleTexture->getTextureID());
