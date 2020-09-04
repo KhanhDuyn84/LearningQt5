@@ -84,18 +84,55 @@ void Application::InitCallBackFunc()
 
 void Application::InitMember()
 {
-    float vertices [] = {
-        -1.0f, -1.0f, 0.0f,     0.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,      1.0f, 0.0f,
-        1.0f, 1.0f, 0.0f,       1.0f, 1.0f,
-        -1.0f, 1.0f, 0.0f,      0.0f, 1.0f
+    float vertices[] = {
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
     GLuint indices[] = {
         0, 1, 2,
         0, 2, 3
     };
-    //triangleModel = Loader::LoadModelWithVertices(vertices, sizeof(vertices)/sizeof(vertices[0]));
-    triangleModel = Loader::LoadModelWithIndices(vertices, sizeof(vertices)/sizeof(vertices[0]), indices, sizeof(indices)/sizeof(indices[0]));
+    triangleModel = Loader::LoadModelWithVertices(vertices, sizeof(vertices)/sizeof(vertices[0]));
+    //triangleModel = Loader::LoadModelWithIndices(vertices, sizeof(vertices)/sizeof(vertices[0]), indices, sizeof(indices)/sizeof(indices[0]));
 
     FileHelper *fileHelper = FileHelper::getInstance();
     std::string triangleVSPath = fileHelper->getPath("TRIANGLE_VS");
@@ -119,12 +156,13 @@ void Application::Run()
     //glEnable(GL_BLEND_SRC);
     while (!glfwWindowShouldClose(m_Window))
     {
+        Update();
         Render();
         //double PosX, PosY;
         //glfwGetCursorPos(m_Window, &PosX, &PosY);
         //std::cout<<PosX<<"  "<<PosY<<std::endl;
-        fps->DoFrame();
-
+        //fps->DoFrame();
+        //std::cout<< fps->getFPS()<<std::endl;
         processInput();
 
 
@@ -133,21 +171,34 @@ void Application::Run()
     }
 }
 
+void Application::Update()
+{
+    glm::mat4 model = glm::mat4(1.0f);
+    glm::mat4 view = glm::mat4(1.0f);
+    glm::mat4 projection = glm::mat4(1.0f);
+    glm::mat4 MVP = glm::mat4(1.0f);
+
+    //model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+    model = glm::rotate(model, (float)glfwGetTime() * glm::radians(-50.0f), glm::vec3(1.0f, 0.5f, 0.0f));
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/SCR_HEIGHT, 0.1f, 100.0f);
+    MVP = projection * view * model;
+
+    triangleShader->Use();
+    triangleShader->setMat4("MVP", MVP);
+}
+
 void Application::Render()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glm::mat4 trans = glm::mat4(1.0f);
-    trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-
     triangleShader->Use();
-    triangleShader->setMat4("MVP", trans);
     glBindVertexArray(triangleModel->getVAOID());
     glActiveTexture(GL_TEXTURE0 + triangleTexture->getTextureUnit());
     glBindTexture(GL_TEXTURE_2D, triangleTexture->getTextureID());
-    //glDrawArrays(GL_TRIANGLES, 0 , 3);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawArrays(GL_TRIANGLES, 0 , triangleModel->getVertexCount());
+    //glDrawElements(GL_TRIANGLES, triangleModel->getVertexCount(), GL_UNSIGNED_INT, 0);
 }
 
 void Application::framebuffer_size_callback(GLFWwindow *window, int Width, int Height)
@@ -171,7 +222,7 @@ void Application::processInput()
 //        else
 //        {
 //            glfwSetWindowAttrib(m_Window, GLFW_DECORATED, GLFW_FALSE);
-//            glfwSetWindowAttrib(m_Window, GLFW_MOUSE_PASSTHROUGH, GLFW_TRUE);
+//            glfwSetWindowAttr ib(m_Window, GLFW_MOUSE_PASSTHROUGH, GLFW_TRUE);
 //            glfwSetWindowOpacity(m_Window, 0.7f);
 //        }
         glfwSetWindowShouldClose(m_Window, true);

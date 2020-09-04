@@ -115,6 +115,27 @@ void GLSLShader::setFloat(const std::string &name, float value) const
     glUniform1f(m_Uniforms.at(name), value);
 }
 
+void GLSLShader::setVec2(const std::string &name, glm::vec2 value) const
+{
+    if(m_Uniforms.find(name) == m_Uniforms.end())
+        return;
+   glUniform2fv(m_Uniforms.at(name), 1, glm::value_ptr(value));
+}
+
+void GLSLShader::setVec3(const std::string &name, glm::vec3 value) const
+{
+    if(m_Uniforms.find(name) == m_Uniforms.end())
+        return;
+   glUniform3fv(m_Uniforms.at(name), 1, glm::value_ptr(value));
+}
+
+void GLSLShader::setVec4(const std::string &name, glm::vec4 value) const
+{
+    if(m_Uniforms.find(name) == m_Uniforms.end())
+        return;
+    glUniform4fv(m_Uniforms.at(name), 1, glm::value_ptr(value));
+}
+
 void GLSLShader::setMat4(const std::string &name, glm::mat4 value) const
 {
     if(m_Uniforms.find(name) == m_Uniforms.end())

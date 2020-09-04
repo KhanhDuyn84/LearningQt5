@@ -22,6 +22,7 @@ private:
     void processInput();
     void InitMember();
     void Render();
+    void Update();
     GLFWwindow *m_Window;
     GSEngine::FPS *fps;
 
