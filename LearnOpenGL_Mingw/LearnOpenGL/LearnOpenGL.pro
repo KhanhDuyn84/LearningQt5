@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         application.cpp \
+        camera.cpp \
         filehelper.cpp \
         fps.cpp \
         glslshader.cpp \
@@ -44,6 +45,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     Global.h \
     application.h \
+    camera.h \
     filehelper.h \
     fps.h \
     glslshader.h \

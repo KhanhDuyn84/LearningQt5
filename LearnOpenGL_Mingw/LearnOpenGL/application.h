@@ -7,6 +7,7 @@ namespace GSEngine {
    class FPS;
    class Texture;
    class Model;
+   class Camera;
 }
 
 class GLFWwindow;
@@ -30,6 +31,11 @@ private:
     GSEngine::Texture *triangleTexture;
     GSEngine::Model *triangleModel;
 
+    static GSEngine::Camera *m_Camera;
+    static float lastX, lastY;
+    static bool isFirstMouse;
+    static void window_focus_callback(GLFWwindow *window, int focused);
+    static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
     static void framebuffer_size_callback(GLFWwindow *window, int Width, int Height);
 public:
     Application();

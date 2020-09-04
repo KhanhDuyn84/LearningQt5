@@ -7,11 +7,18 @@
 #include "loader.h"
 #include "SOIL2/SOIL2.h"
 #include "texture.h"
-#include <iostream>
 #include "filehelper.h"
+#include "camera.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include <iostream>
+#include <windows.h>
+
+float Application::lastX = SCR_WIDTH / 2;
+float Application::lastY = SCR_HEIGHT / 2;
+bool Application::isFirstMouse = true;
+GSEngine::Camera* Application::m_Camera = nullptr;
 using namespace GSEngine;
 
 Application::Application()
@@ -45,7 +52,8 @@ void Application::InitWindow()
     glfwSwapInterval(1);
     GLFWmonitor *primaryMonitor = glfwGetPrimaryMonitor();
     const GLFWvidmode *modes = glfwGetVideoMode(primaryMonitor);
-    glfwSetWindowPos(m_Window, modes->width - SCR_WIDTH, modes->height/2 - SCR_HEIGHT/2);
+    glfwSetWindowPos(m_Window, modes->width/2 - SCR_WIDTH/2, modes->height/2 - SCR_HEIGHT/2);
+    //glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetWindowOpacity(m_Window, 0.7f);
 }
 
@@ -80,6 +88,8 @@ void Application::InitIcon()
 void Application::InitCallBackFunc()
 {
     glfwSetFramebufferSizeCallback(m_Window, &Application::framebuffer_size_callback);
+    glfwSetCursorPosCallback(m_Window, &Application::mouse_callback);
+    glfwSetWindowFocusCallback(m_Window, &Application::window_focus_callback);
 }
 
 void Application::InitMember()
@@ -147,21 +157,25 @@ void Application::InitMember()
     triangleShader->setInt("ourTexture", 0);
 
     fps = new FPS();
+
+    m_Camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Application::Run()
 {
+
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glEnable(GL_DEPTH_TEST);
     //glEnable(GL_BLEND_SRC);
     while (!glfwWindowShouldClose(m_Window))
     {
+
         Update();
         Render();
         //double PosX, PosY;
         //glfwGetCursorPos(m_Window, &PosX, &PosY);
         //std::cout<<PosX<<"  "<<PosY<<std::endl;
-        //fps->DoFrame();
+        fps->DoFrame();
         //std::cout<< fps->getFPS()<<std::endl;
         processInput();
 
@@ -178,9 +192,10 @@ void Application::Update()
     glm::mat4 projection = glm::mat4(1.0f);
     glm::mat4 MVP = glm::mat4(1.0f);
 
-    //model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
     model = glm::rotate(model, (float)glfwGetTime() * glm::radians(-50.0f), glm::vec3(1.0f, 0.5f, 0.0f));
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    view = glm::lookAt(m_Camera->getPosition(), m_Camera->getPosition() + m_Camera->getTarget(), m_Camera->getVectorUp());
+    //view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
     projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/SCR_HEIGHT, 0.1f, 100.0f);
     MVP = projection * view * model;
 
@@ -201,31 +216,50 @@ void Application::Render()
     //glDrawElements(GL_TRIANGLES, triangleModel->getVertexCount(), GL_UNSIGNED_INT, 0);
 }
 
-void Application::framebuffer_size_callback(GLFWwindow *window, int Width, int Height)
-{
-    (void)window;
-    glViewport(0, 0, Width, Height);
-}
-
 void Application::processInput()
 {
-    if(glfwGetKey(m_Window, GLFW_KEY_SPACE) == GLFW_PRESS)
+    float deltaTime = fps->getDeltaTime();
+    if (glfwGetKey(m_Window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
-//        static bool isShow = false;
-//        isShow = !isShow;
-//        if(isShow)
+        glfwSetWindowShouldClose(m_Window, GL_TRUE);
+    }
+    if (glfwGetKey(m_Window, GLFW_KEY_W) == GLFW_PRESS)
+    {
+        m_Camera->InputKeyBoard(Camera_Movement::FORWARD, deltaTime);
+    }
+    if (glfwGetKey(m_Window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+        m_Camera->InputKeyBoard(Camera_Movement::BACKWARD, deltaTime);
+    }
+    if (glfwGetKey(m_Window, GLFW_KEY_A) == GLFW_PRESS)
+    {
+        m_Camera->InputKeyBoard(Camera_Movement::LEFT, deltaTime);
+    }
+    if (glfwGetKey(m_Window, GLFW_KEY_D) == GLFW_PRESS)
+    {
+        m_Camera->InputKeyBoard(Camera_Movement::RIGHT, deltaTime);
+    }
+
+    POINT p;
+    if (GetCursorPos(&p))
+    {
+        //cursor position now in p.x and p.y
+        std::cout<<p.x<<"   "<<p.y<<std::endl;
+        float xpos = p.x;
+        float ypos = p.y;
+//        if (isFirstMouse)
 //        {
-//            glfwSetWindowAttrib(m_Window, GLFW_DECORATED, GLFW_TRUE);
-//            glfwSetWindowAttrib(m_Window, GLFW_MOUSE_PASSTHROUGH, GLFW_FALSE);
-//            glfwSetWindowOpacity(m_Window, 1.0f);
+//            lastX = xpos;
+//            lastY = ypos;
+//            isFirstMouse = false;
 //        }
-//        else
-//        {
-//            glfwSetWindowAttrib(m_Window, GLFW_DECORATED, GLFW_FALSE);
-//            glfwSetWindowAttr ib(m_Window, GLFW_MOUSE_PASSTHROUGH, GLFW_TRUE);
-//            glfwSetWindowOpacity(m_Window, 0.7f);
-//        }
-        glfwSetWindowShouldClose(m_Window, true);
+
+        float xoffset = xpos - lastX;
+        float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+        lastX = xpos;
+        lastY = ypos;
+
+        m_Camera->InputMouse(xoffset, yoffset);
     }
 }
 
@@ -234,4 +268,40 @@ Application::~Application()
     Loader::CleanUp();
     glfwDestroyWindow(m_Window);
     glfwTerminate();
+}
+
+void Application::mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+//    (void)window;
+//    if (isFirstMouse)
+//    {
+//        lastX = xpos;
+//        lastY = ypos;
+//        isFirstMouse = false;
+//    }
+
+//    float xoffset = xpos - lastX;
+//    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+//    lastX = xpos;
+//    lastY = ypos;
+
+//    m_Camera->InputMouse(xoffset, yoffset);
+}
+
+void Application::framebuffer_size_callback(GLFWwindow *window, int Width, int Height)
+{
+    (void)window;
+    glViewport(0, 0, Width, Height);
+}
+
+void Application::window_focus_callback(GLFWwindow *window, int focused)
+{
+//    if(focused)
+//    {
+//        glfwSetWindowAttrib(window, GLFW_MOUSE_PASSTHROUGH, GLFW_FALSE);
+//    }
+//    else
+//    {
+//        glfwSetWindowAttrib(window, GLFW_MOUSE_PASSTHROUGH, GLFW_TRUE);
+//    }
 }
