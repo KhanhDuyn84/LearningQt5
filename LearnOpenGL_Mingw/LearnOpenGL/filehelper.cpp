@@ -8,11 +8,12 @@ FileHelper::FileHelper()
     m_ImagesPath = m_ResoucePath + "/Images";
     m_ShadersPath = m_ResoucePath + "/Shaders";
 
-    m_MapPath["TRIANGLE_VS"] = m_ShadersPath + "/triangleShaderVS.vs";
-    m_MapPath["TRIANGLE_FS"] = m_ShadersPath + "/triangleShaderFS.fs";
+    m_MapPath["OBJECT_VS"] = m_ShadersPath + "/objectShaderVS.vs";
+    m_MapPath["OBJECT_FS"] = m_ShadersPath + "/objectShaderFS.fs";
+    m_MapPath["LAMP_FS"]   = m_ShadersPath + "/lampShaderFS.fs";
 
     m_MapPath["IMAGE_ICON"] = m_ImagesPath + "/icon2.png";
-    m_MapPath["BROKEN_IMAGE"] = m_ImagesPath + "/container.jpg";
+    m_MapPath["BROKEN_IMAGE"] = m_ImagesPath + "/glass.png";
 }
 
 FileHelper::~FileHelper()

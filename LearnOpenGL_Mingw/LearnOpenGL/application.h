@@ -1,6 +1,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 #include "glad/glad.h"
+#include "glm/glm.hpp"
 
 namespace GSEngine {
    class GLSLShader;
@@ -21,21 +22,28 @@ private:
     void InitIcon();
     void InitCallBackFunc();
     void processInput();
+    void KeyboardInput();
+    void MouseInput();
     void InitMember();
     void Render();
     void Update();
     GLFWwindow *m_Window;
     GSEngine::FPS *fps;
 
-    GSEngine::GLSLShader *triangleShader;
-    GSEngine::Texture *triangleTexture;
-    GSEngine::Model *triangleModel;
+    GSEngine::GLSLShader *objectShader;
+    GSEngine::Texture *objectTexture;
+    GSEngine::Model *objectModel;
+
+    GSEngine::GLSLShader *lampShader;
+    GSEngine::Model *lampModel;
+
+    glm::vec3 lightPos;
+    glm::vec3 lightColor;
+    glm::vec3 objectColor;
 
     static GSEngine::Camera *m_Camera;
     static float lastX, lastY;
     static bool isFirstMouse;
-    static void window_focus_callback(GLFWwindow *window, int focused);
-    static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
     static void framebuffer_size_callback(GLFWwindow *window, int Width, int Height);
 public:
     Application();

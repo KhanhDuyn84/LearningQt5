@@ -94,49 +94,51 @@ void GLSLShader::Use()
     glUseProgram(ID);
 }
 
-void GLSLShader::setBool(const std::string &name, bool value) const
+void GLSLShader::setBool(const std::string &name,const bool &value) const
 {
     if(m_Uniforms.find(name) == m_Uniforms.end())
         return;
     glUniform1i(m_Uniforms.at(name), (int)value);
 }
 
-void GLSLShader::setInt(const std::string &name, int value) const
+void GLSLShader::setInt(const std::string &name,const int &value) const
 {
     if(m_Uniforms.find(name) == m_Uniforms.end())
         return;
     glUniform1i(m_Uniforms.at(name), value);
 }
 
-void GLSLShader::setFloat(const std::string &name, float value) const
+void GLSLShader::setFloat(const std::string &name,const float &value) const
 {
     if(m_Uniforms.find(name) == m_Uniforms.end())
         return;
     glUniform1f(m_Uniforms.at(name), value);
 }
 
-void GLSLShader::setVec2(const std::string &name, glm::vec2 value) const
+void GLSLShader::setVec2(const std::string &name,const glm::vec2 &value) const
 {
     if(m_Uniforms.find(name) == m_Uniforms.end())
         return;
    glUniform2fv(m_Uniforms.at(name), 1, glm::value_ptr(value));
 }
 
-void GLSLShader::setVec3(const std::string &name, glm::vec3 value) const
+void GLSLShader::setVec3(const std::string &name,const glm::vec3 &value) const
+{
+    if(m_Uniforms.find(name) == m_Uniforms.end())
+    {
+        return;
+    }
+   glUniform3fv(m_Uniforms.at(name), 1,  &value[0]);
+}
+
+void GLSLShader::setVec4(const std::string &name,const glm::vec4 &value) const
 {
     if(m_Uniforms.find(name) == m_Uniforms.end())
         return;
-   glUniform3fv(m_Uniforms.at(name), 1, glm::value_ptr(value));
+    glUniform4fv(m_Uniforms.at(name), 1,  &value[0]);
 }
 
-void GLSLShader::setVec4(const std::string &name, glm::vec4 value) const
-{
-    if(m_Uniforms.find(name) == m_Uniforms.end())
-        return;
-    glUniform4fv(m_Uniforms.at(name), 1, glm::value_ptr(value));
-}
-
-void GLSLShader::setMat4(const std::string &name, glm::mat4 value) const
+void GLSLShader::setMat4(const std::string &name,const glm::mat4 &value) const
 {
     if(m_Uniforms.find(name) == m_Uniforms.end())
         return;
