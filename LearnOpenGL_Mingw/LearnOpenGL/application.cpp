@@ -51,7 +51,7 @@ void Application::InitWindow()
     GLFWmonitor *primaryMonitor = glfwGetPrimaryMonitor();
     const GLFWvidmode *modes = glfwGetVideoMode(primaryMonitor);
     glfwSetWindowPos(m_Window, modes->width/2 - SCR_WIDTH/2, modes->height/2 - SCR_HEIGHT/2);
-    glfwSetWindowOpacity(m_Window, 0.7f);
+    //glfwSetWindowOpacity(m_Window, 0.7f);
 }
 
 void Application::InitOpenGL()
@@ -155,14 +155,35 @@ void Application::InitMember()
 
     objectShader->addUniform("MVP");
     objectShader->addUniform("model");
+
     objectShader->addUniform("objectColor");
     objectShader->addUniform("lightColor");
     objectShader->addUniform("lightPos");
     objectShader->addUniform("viewPos");
 
+    objectShader->addUniform("material.ambient");
+    objectShader->addUniform("material.diffuse");
+    objectShader->addUniform("material.specular");
+    objectShader->addUniform("material.shininess");
+
+    objectShader->addUniform("light.position");
+    objectShader->addUniform("light.ambient");
+    objectShader->addUniform("light.diffuse");
+    objectShader->addUniform("light.specular");
+
     objectShader->Use();
     objectShader->setVec3("objectColor", objectColor);
     objectShader->setVec3("lightColor",  lightColor);
+
+    objectShader->setVec3("material.ambient", CYAN_RUBBER_AMBIENT_MAT);
+    objectShader->setVec3("material.diffuse",  CYAN_RUBBER_DIFFUSE_MAT);
+    objectShader->setVec3("material.specular", CYAN_RUBBER_SPECULAR_MAT);
+    objectShader->setFloat("material.shininess",  128.0f * CYAN_RUBBER_SHININESS_MAT);
+
+    objectShader->setVec3("light.ambient", glm::vec3(1.0,	1.0,	1.0));
+    objectShader->setVec3("light.diffuse",  glm::vec3(1.0,	1.0,	1.0));
+    objectShader->setVec3("light.specular", glm::vec3(1.0,	1.0,	1.0));
+    objectShader->setVec3("light.position",  lightPos);
 
     objectShader->setInt("ourTexture", 0);
 
