@@ -89,47 +89,47 @@ void Application::InitCallBackFunc()
 void Application::InitMember()
 {
     float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-            0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-           -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-           -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+             0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+             0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+             0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
 
-           -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-            0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-           -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-           -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+             0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
+             0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+             0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
 
-           -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-           -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-           -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-           -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-           -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-           -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+            -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+            -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+             0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+             0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+             0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+             0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+             0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+             0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-           -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-            0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-           -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-           -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+             0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
+             0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+             0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
 
-           -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-           -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-           -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+             0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+             0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+             0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
     };
     GLuint indices[] = {
         0, 1, 2,
@@ -140,8 +140,8 @@ void Application::InitMember()
     std::string objectVSPath    = fileHelper->getPath("OBJECT_VS");
     std::string objectFSPath    = fileHelper->getPath("OBJECT_FS");
     std::string lampFSPath      = fileHelper->getPath("LAMP_FS");
-    std::string brokenImagePath = fileHelper->getPath("BROKEN_IMAGE");
-
+    std::string container2Path = fileHelper->getPath("CONTAINER2_IMAGE");
+    std::string container2_specularPath = fileHelper->getPath("CONTAINER2_SPECULAR_IMAGE");
     lightPos    = glm::vec3(1.2f, 0.0f, 1.0f);
     lightColor  = glm::vec3(1.0f, 1.0f, 1.0f);
     objectColor = glm::vec3(1.0f, 0.5f, 0.31f);
@@ -151,7 +151,8 @@ void Application::InitMember()
     //objectModel = Loader::LoadModelWithIndices(vertices, sizeof(vertices)/sizeof(vertices[0]), indices, sizeof(indices)/sizeof(indices[0]));
 
     objectShader    = new GLSLShader(objectVSPath.c_str(), objectFSPath.c_str());
-    objectTexture   = Loader::LoadTexture(brokenImagePath.c_str(), 0);
+    objectTexture   = Loader::LoadTexture(container2Path.c_str(), 0);
+    objectTexture1  = Loader::LoadTexture(container2_specularPath.c_str(), 1);
 
     objectShader->addUniform("MVP");
     objectShader->addUniform("model");
@@ -161,7 +162,6 @@ void Application::InitMember()
     objectShader->addUniform("lightPos");
     objectShader->addUniform("viewPos");
 
-    objectShader->addUniform("material.ambient");
     objectShader->addUniform("material.diffuse");
     objectShader->addUniform("material.specular");
     objectShader->addUniform("material.shininess");
@@ -175,13 +175,12 @@ void Application::InitMember()
     objectShader->setVec3("objectColor", objectColor);
     objectShader->setVec3("lightColor",  lightColor);
 
-    objectShader->setVec3("material.ambient", CYAN_RUBBER_AMBIENT_MAT);
-    objectShader->setVec3("material.diffuse",  CYAN_RUBBER_DIFFUSE_MAT);
-    objectShader->setVec3("material.specular", CYAN_RUBBER_SPECULAR_MAT);
-    objectShader->setFloat("material.shininess",  128.0f * CYAN_RUBBER_SHININESS_MAT);
+    objectShader->setInt("material.diffuse",  objectTexture->getTextureUnit());
+    objectShader->setInt("material.specular", objectTexture1->getTextureUnit());
+    objectShader->setFloat("material.shininess",  64.0f);
 
-    objectShader->setVec3("light.ambient", glm::vec3(1.0,	1.0,	1.0));
-    objectShader->setVec3("light.diffuse",  glm::vec3(1.0,	1.0,	1.0));
+    objectShader->setVec3("light.ambient", glm::vec3(0.2,	0.2,	0.2));
+    objectShader->setVec3("light.diffuse",  glm::vec3(0.5,	0.5,	0.5));
     objectShader->setVec3("light.specular", glm::vec3(1.0,	1.0,	1.0));
     objectShader->setVec3("light.position",  lightPos);
 
@@ -258,6 +257,10 @@ void Application::Render()
 
     //Render Object
     objectShader->Use();
+    glBindTexture(GL_TEXTURE_2D, objectTexture->getTextureID());
+    glActiveTexture(GL_TEXTURE0 + objectTexture->getTextureUnit());
+    glBindTexture(GL_TEXTURE_2D, objectTexture1->getTextureID());
+    glActiveTexture(GL_TEXTURE0 + objectTexture1->getTextureUnit());
     glBindVertexArray(objectModel->getVAOID());
     glDrawArrays(GL_TRIANGLES, 0, objectModel->getVertexCount());
 

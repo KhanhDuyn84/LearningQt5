@@ -32,6 +32,7 @@ private:
 
     GSEngine::GLSLShader *objectShader;
     GSEngine::Texture *objectTexture;
+    GSEngine::Texture *objectTexture1;
     GSEngine::Model *objectModel;
 
     GSEngine::GLSLShader *lampShader;

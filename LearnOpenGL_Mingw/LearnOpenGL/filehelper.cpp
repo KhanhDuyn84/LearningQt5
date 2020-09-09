@@ -13,7 +13,8 @@ FileHelper::FileHelper()
     m_MapPath["LAMP_FS"]   = m_ShadersPath + "/lampShaderFS.fs";
 
     m_MapPath["IMAGE_ICON"] = m_ImagesPath + "/icon2.png";
-    m_MapPath["BROKEN_IMAGE"] = m_ImagesPath + "/glass.png";
+    m_MapPath["CONTAINER2_IMAGE"] = m_ImagesPath + "/container2.png";
+    m_MapPath["CONTAINER2_SPECULAR_IMAGE"] = m_ImagesPath + "/container2_specular.png";
 }
 
 FileHelper::~FileHelper()
