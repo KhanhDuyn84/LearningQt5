@@ -84,14 +84,24 @@ void GLSLShader::checkCompileErrors(unsigned int shader, std::string type)
        }
    }
 
-void GLSLShader::addUniform(std::string name)
+void GLSLShader::addUniform(const std::string &uniform)
 {
-    m_Uniforms[name] = glGetUniformLocation(ID, name.c_str());
+    m_Uniforms[uniform] = glGetUniformLocation(ID, uniform.c_str());
+}
+
+void GLSLShader::addAttribute(const std::string& attribute)
+{
+    m_Attributes[attribute] = glGetAttribLocation(ID, attribute.c_str());
 }
 
 void GLSLShader::Use()
 {
     glUseProgram(ID);
+}
+
+void GLSLShader::UnUse()
+{
+     glUseProgram(0);
 }
 
 void GLSLShader::setBool(const std::string &name,const bool &value) const
@@ -143,6 +153,33 @@ void GLSLShader::setMat4(const std::string &name,const glm::mat4 &value) const
     if(m_Uniforms.find(name) == m_Uniforms.end())
         return;
     glUniformMatrix4fv(m_Uniforms.at(name), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+
+GLuint GLSLShader::operator()(const std::string &uniform)
+{
+    if(m_Uniforms.find(uniform) != m_Uniforms.end())
+    {
+        return m_Uniforms[uniform];
+    }
+    else
+    {
+        std::cout<<"UNIFORM COULD NOT BE FOUND"<<std::endl;
+        return -1;
+    }
+}
+
+GLuint GLSLShader::operator[](const std::string &attribute)
+{
+    if(m_Attributes.find(attribute) != m_Attributes.end())
+    {
+        return m_Attributes[attribute];
+    }
+    else
+    {
+        std::cout<<"ATTRIBUTE COULD NOT BE FOUND"<<std::endl;
+        return -1;
+    }
 }
 
 GLSLShader::~GLSLShader()

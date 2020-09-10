@@ -13,6 +13,8 @@ namespace GSEngine {
 
 class GLFWwindow;
 class FileHelper;
+class ContainerObj;
+class LightObj;
 
 class Application
 {
@@ -26,21 +28,13 @@ private:
     void MouseInput();
     void InitMember();
     void Render();
-    void Update();
     GLFWwindow *m_Window;
     GSEngine::FPS *fps;
 
-    GSEngine::GLSLShader *objectShader;
-    GSEngine::Texture *objectTexture;
-    GSEngine::Texture *objectTexture1;
-    GSEngine::Model *objectModel;
-
-    GSEngine::GLSLShader *lampShader;
-    GSEngine::Model *lampModel;
+    ContainerObj *container;
+    LightObj     *lamp;
 
     glm::vec3 lightPos;
-    glm::vec3 lightColor;
-    glm::vec3 objectColor;
 
     static GSEngine::Camera *m_Camera;
     static float lastX, lastY;

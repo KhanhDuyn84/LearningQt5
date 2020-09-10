@@ -1,6 +1,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
-
+#include "glad/glad.h"
+#include <iostream>
 #include "noncopyable.h"
 
 namespace GSEngine
@@ -9,12 +10,15 @@ namespace GSEngine
 class Texture : public Noncopyable
 {
 private:
-    unsigned int m_TextureID;
-    unsigned int m_TextureUnit;
+    GLuint m_TextureID;
+    GLuint m_TextureUnit;
 public:
-    Texture(unsigned int textureID = 0 , unsigned int TextureUnit = 0);
-    unsigned int getTextureID() const;
-    unsigned int getTextureUnit() const;
+    Texture ();
+    ~Texture();
+    void LoadTexture(std::string fileName, GLuint TextureUnit, GLuint WRAP_S = GL_REPEAT, GLuint WRAP_T = GL_REPEAT,
+                     GLuint FILTER_MAG = GL_LINEAR, GLuint FILTER_MIN = GL_LINEAR);
+    GLuint getTextureID() const;
+    GLuint getTextureUnit() const;
 };
 
 }

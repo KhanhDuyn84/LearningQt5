@@ -17,9 +17,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         application.cpp \
         camera.cpp \
+        containerobj.cpp \
         filehelper.cpp \
         fps.cpp \
         glslshader.cpp \
+        lightobj.cpp \
         loader.cpp \
         main.cpp \
         model.cpp \
@@ -46,9 +48,11 @@ HEADERS += \
     Global.h \
     application.h \
     camera.h \
+    containerobj.h \
     filehelper.h \
     fps.h \
     glslshader.h \
+    lightobj.h \
     loader.h \
     model.h \
     noncopyable.h \

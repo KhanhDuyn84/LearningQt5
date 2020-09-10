@@ -1,4 +1,6 @@
 #include "model.h"
+#include <glad/glad.h>
+#include <iostream>
 namespace GSEngine
 {
 
@@ -10,6 +12,7 @@ Model::Model(unsigned int VAOID, unsigned int VertexCount)
 Model::~Model()
 {
     m_VertexCount = 0;
+    glDeleteVertexArrays(1, &m_VAOID);
 }
 
 unsigned int Model::getVAOID() const

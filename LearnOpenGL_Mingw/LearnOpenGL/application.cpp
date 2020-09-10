@@ -1,4 +1,6 @@
 #include "application.h"
+#include <iostream>
+#include <windows.h>
 #include "GLFW/glfw3.h"
 #include "glslshader.h"
 #include "Global.h"
@@ -10,8 +12,9 @@
 #include "filehelper.h"
 #include "camera.h"
 #include "glm/gtc/matrix_transform.hpp"
-#include <iostream>
-#include <windows.h>
+#include "lightobj.h"
+#include "containerobj.h"
+
 
 float Application::lastX = SCR_WIDTH / 2;
 float Application::lastY = SCR_HEIGHT / 2;
@@ -88,115 +91,13 @@ void Application::InitCallBackFunc()
 
 void Application::InitMember()
 {
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-             0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
-             0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-             0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+    lightPos    = glm::vec3(1.2f, 0.5f, 1.0f);
 
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-             0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-             0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-             0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-             0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
-             0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-             0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-             0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
-    };
-    GLuint indices[] = {
-        0, 1, 2,
-        0, 2, 3
-    };
-
-    FileHelper *fileHelper      = FileHelper::getInstance();
-    std::string objectVSPath    = fileHelper->getPath("OBJECT_VS");
-    std::string objectFSPath    = fileHelper->getPath("OBJECT_FS");
-    std::string lampFSPath      = fileHelper->getPath("LAMP_FS");
-    std::string container2Path = fileHelper->getPath("CONTAINER2_IMAGE");
-    std::string container2_specularPath = fileHelper->getPath("CONTAINER2_SPECULAR_IMAGE");
-    lightPos    = glm::vec3(1.2f, 0.0f, 1.0f);
-    lightColor  = glm::vec3(1.0f, 1.0f, 1.0f);
-    objectColor = glm::vec3(1.0f, 0.5f, 0.31f);
-
-    //For container object
-    objectModel = Loader::LoadModelWithVertices(vertices, sizeof(vertices)/sizeof(vertices[0]));
-    //objectModel = Loader::LoadModelWithIndices(vertices, sizeof(vertices)/sizeof(vertices[0]), indices, sizeof(indices)/sizeof(indices[0]));
-
-    objectShader    = new GLSLShader(objectVSPath.c_str(), objectFSPath.c_str());
-    objectTexture   = Loader::LoadTexture(container2Path.c_str(), 0);
-    objectTexture1  = Loader::LoadTexture(container2_specularPath.c_str(), 1);
-
-    objectShader->addUniform("MVP");
-    objectShader->addUniform("model");
-
-    objectShader->addUniform("objectColor");
-    objectShader->addUniform("lightColor");
-    objectShader->addUniform("lightPos");
-    objectShader->addUniform("viewPos");
-
-    objectShader->addUniform("material.diffuse");
-    objectShader->addUniform("material.specular");
-    objectShader->addUniform("material.shininess");
-
-    objectShader->addUniform("light.position");
-    objectShader->addUniform("light.ambient");
-    objectShader->addUniform("light.diffuse");
-    objectShader->addUniform("light.specular");
-
-    objectShader->Use();
-    objectShader->setVec3("objectColor", objectColor);
-    objectShader->setVec3("lightColor",  lightColor);
-
-    objectShader->setInt("material.diffuse",  objectTexture->getTextureUnit());
-    objectShader->setInt("material.specular", objectTexture1->getTextureUnit());
-    objectShader->setFloat("material.shininess",  64.0f);
-
-    objectShader->setVec3("light.ambient", glm::vec3(0.2,	0.2,	0.2));
-    objectShader->setVec3("light.diffuse",  glm::vec3(0.5,	0.5,	0.5));
-    objectShader->setVec3("light.specular", glm::vec3(1.0,	1.0,	1.0));
-    objectShader->setVec3("light.position",  lightPos);
-
-    objectShader->setInt("ourTexture", 0);
-
-    //For Lamp Object
-    lampModel       = Loader::LoadModelWithVertices(vertices, sizeof(vertices)/sizeof(vertices[0]));
-    lampShader      = new GLSLShader(objectVSPath.c_str(), lampFSPath.c_str());
-    lampShader->addUniform("lightColor");
-    lampShader->addUniform("MVP");
-
-    lampShader->Use();
-    lampShader->setVec3("lightColor", lightColor);
+    container = new ContainerObj();
+    lamp      = new LightObj();
 
     fps = new FPS();
-    m_Camera = new Camera(glm::vec3(-1.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    m_Camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Application::Run()
@@ -206,8 +107,6 @@ void Application::Run()
     glEnable(GL_DEPTH_TEST);
     while (!glfwWindowShouldClose(m_Window))
     {
-        Update();
-
         Render();
 
         fps->DoFrame();
@@ -220,54 +119,30 @@ void Application::Run()
     }
 }
 
-void Application::Update()
-{
-    glm::mat4 model = glm::mat4(1.0f);
-    glm::mat4 view = glm::mat4(1.0f);
-    glm::mat4 projection = glm::mat4(1.0f);
-    glm::mat4 MVP = glm::mat4(1.0f);
-
-    //For object
-    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-    //model = glm::rotate(model, (float)glfwGetTime() * glm::radians(-50.0f), glm::vec3(1.0f, 0.5f, 0.0f));
-    view = glm::lookAt(m_Camera->getPosition(), m_Camera->getPosition() + m_Camera->getTarget(), m_Camera->getVectorUp());
-    projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/SCR_HEIGHT, 0.1f, 100.0f);
-    MVP = projection * view * model;
-    lightPos.x = 2.0f * cos(glfwGetTime());
-    lightPos.z = 2.0f * sin(glfwGetTime());
-    objectShader->Use();
-    objectShader->setVec3("lightPos", lightPos);
-    objectShader->setVec3("viewPos", m_Camera->getPosition());
-    objectShader->setMat4("MVP", MVP);
-    objectShader->setMat4("model", model);
-
-    //For Lamp
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, lightPos);
-    model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-    MVP = projection * view * model;
-    lampShader->Use();
-    lampShader->setMat4("MVP", MVP);
-}
-
 void Application::Render()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //Render Object
-    objectShader->Use();
-    glBindTexture(GL_TEXTURE_2D, objectTexture->getTextureID());
-    glActiveTexture(GL_TEXTURE0 + objectTexture->getTextureUnit());
-    glBindTexture(GL_TEXTURE_2D, objectTexture1->getTextureID());
-    glActiveTexture(GL_TEXTURE0 + objectTexture1->getTextureUnit());
-    glBindVertexArray(objectModel->getVAOID());
-    glDrawArrays(GL_TRIANGLES, 0, objectModel->getVertexCount());
+    lightPos.x = 1.5f * cos(glfwGetTime());
+    lightPos.z = 1.5f * sin(glfwGetTime());
+
+    glm::mat4 view = glm::mat4(1.0f);
+    glm::mat4 projection = glm::mat4(1.0f);
+    view =  glm::lookAt(m_Camera->getPosition(), m_Camera->getPosition() + m_Camera->getTarget(), m_Camera->getVectorUp());
+    projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/SCR_HEIGHT, 0.1f, 100.0f);
+
+    container->setViewMatrix(view);
+    container->setProjectionMatrix(projection);
+    container->setViewPos(m_Camera->getPosition());
+    container->setLightPos(lightPos);
+    container->Render();
 
     //Render Lamp
-    lampShader->Use();
-    glBindVertexArray(lampModel->getVAOID());
-    glDrawArrays(GL_TRIANGLES, 0, lampModel->getVertexCount());
+    lamp->setViewMatrix(view);
+    lamp->setProjectionMatrix(projection);
+    lamp->setLightPos(lightPos);
+    lamp->Render();
 }
 
 void Application::processInput()
@@ -322,7 +197,11 @@ void Application::MouseInput()
 
 Application::~Application()
 {
-    Loader::CleanUp();
+    if(container)
+    {
+        delete container;
+        container = nullptr;
+    }
     glfwDestroyWindow(m_Window);
     glfwTerminate();
 }
